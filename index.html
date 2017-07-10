@@ -1,33 +1,28 @@
 <!doctype html>
-
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-
-		<title>Git Testing Playground</title>
-
-		<meta name="description" content="HTML5 Set">
-		<meta name="author" content="testSite">
-
-		<link rel="stylesheet" href="css/styles.css">
-
-	<!--[if lt IE 9]>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
-	<![endif]-->
-
-	</head>
-
-	<body>
-		<div>
-			
-			<h1>Git Testing Playground</h1><br>
-			<h3>index.html page</h3>
-			<em>Some new emphasized content, it goes here</em><br>
-			And here is a <a href="#">link</a> to nothing<br>
-			<a href="#">My Link here goes nowhere either. Haha!</a>
-		</div>
-	</body>
-
+<html ng-app="todoApp">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="js/todo.js"></script>
+    <link rel="stylesheet" href="styles/todo.css">
+  </head>
+  <body>
+    <h2>Todo</h2>
+    <div ng-controller="TodoListController as todoList">
+      <span>{{todoList.remaining()}} of {{todoList.todos.length}} remaining</span>
+      [ <a href="" ng-click="todoList.archive()">archive</a> ]
+      <ul class="unstyled">
+        <li ng-repeat="todo in todoList.todos">
+          <label class="checkbox">
+            <input type="checkbox" ng-model="todo.done">
+            <span class="done-{{todo.done}}">{{todo.text}}</span>
+          </label>
+        </li>
+      </ul>
+      <form ng-submit="todoList.addTodo()">
+        <input type="text" ng-model="todoList.todoText"  size="30"
+               placeholder="add new todo here">
+        <input class="btn-primary" type="submit" value="add">
+      </form>
+    </div>
+  </body>
 </html>
-
-
