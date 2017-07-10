@@ -1,11 +1,14 @@
 <!doctype html>
 <html ng-app="todoApp">
   <head>
+	<title>Git Testing Playground</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="js/todo.js"></script>
     <link rel="stylesheet" href="styles/todo.css">
   </head>
   <body>
+	  <h1>Git Testing Playground</h1>
+	  <hr>
     <h2>Todo</h2>
     <div ng-controller="TodoListController as todoList">
       <span>{{todoList.remaining()}} of {{todoList.todos.length}} remaining</span>
