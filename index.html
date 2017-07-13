@@ -26,6 +26,18 @@
                placeholder="add new todo here">
         <input class="btn-primary" type="submit" value="add">
       </form>
+      <br>
+      <br>
+      <div ng-show="todoList.showArchives">
+      	<h4>Completed and Archived Todos</h4>
+      	<div style="width: 300px; padding: 10px; border: 1px solid #000; background-color: #efefef">
+      		<ul class="unstyled">
+			<li ng-repeat="deadTodo in todoList.deadTodos" style="color: grey">
+				<del>{{deadTodo.text}}</del> - completed
+			</li>
+		</ul>
+      	</div>
+      </div>
     </div>
   </body>
 </html>

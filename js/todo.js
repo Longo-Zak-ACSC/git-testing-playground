@@ -3,7 +3,12 @@ angular.module('todoApp', [])
     var todoList = this;
     todoList.todos = [
       {text:'learn AngularJS', done:true},
-      {text:'build an AngularJS app', done:false}];
+      {text:'build an AngularJS app', done:false}
+    ];
+
+    todoList.deadTodos = [];
+
+    todoList.showArchives = false;
  
     todoList.addTodo = function() {
       todoList.todos.push({text:todoList.todoText, done:false});
@@ -22,7 +27,12 @@ angular.module('todoApp', [])
       var oldTodos = todoList.todos;
       todoList.todos = [];
       angular.forEach(oldTodos, function(todo) {
-        if (!todo.done) todoList.todos.push(todo);
+        if (!todo.done) {
+		todoList.todos.push(todo);
+	} else {
+		todoList.showArchives = true;
+		todoList.deadTodos.push(todo);
+      	} 
       });
     };
   });
