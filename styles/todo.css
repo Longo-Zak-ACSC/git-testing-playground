@@ -2,3 +2,23 @@
   text-decoration: line-through;
   color: grey;
 }
+
+.unstyled {
+  list-style: none;
+}
+
+.container {
+  width: 600px;
+  margin: 0 auto;
+}
+
+.archives {
+  width: 300px;
+  padding: 10px;
+  border: 1px solid #757575;
+  background-color: #f2f2f2;
+}
+
+.archives ul li {
+  color: #aaa;
+}
