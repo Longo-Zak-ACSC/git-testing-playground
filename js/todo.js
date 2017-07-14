@@ -1,18 +1,34 @@
 angular.module('todoApp', [])
   .controller('TodoListController', function() {
     var todoList = this;
-    todoList.todos = [
-      {text:'learn AngularJS', done:true},
-      {text:'build an AngularJS app', done:false}
-    ];
 
-    todoList.deadTodos = [];
+    /*
+     * LOCAL STORAGE UTILIZED 
+     * SO DATA IS NOT LOST ON BROWSER REFRESH
+     * IT IS LOST WHEN BROWSER IS CLOSED
+    */
+    if (localStorage.getItem("todos") !== null) {
+    	todoList.todos = JSON.parse(localStorage.todos);
+    } else {
+    	todoList.todos = [
+      	    {text:'learn AngularJS', done:true},
+      	    {text:'build an AngularJS app', done:false}
+    	];
+    }
 
-    todoList.showArchives = false;
+    if (localStorage.getItem("deadTodos") !== null) {
+	todoList.showArchives = true;
+	todoList.deadTodos = JSON.parse(localStorage.deadTodos);
+    } else {
+	todoList.showArchives = false;
+    	todoList.deadTodos = [];
+    }
+ 
  
     todoList.addTodo = function() {
       todoList.todos.push({text:todoList.todoText, done:false});
       todoList.todoText = '';
+      localStorage.todos = JSON.stringify(todoList.todos);
     };
  
     todoList.remaining = function() {
@@ -31,8 +47,11 @@ angular.module('todoApp', [])
 		todoList.todos.push(todo);
 	} else {
 		todoList.showArchives = true;
-		todoList.deadTodos.push(todo);
+		todoList.deadTodos.push(todo);		
       	} 
       });
+       
+      localStorage.todos = JSON.stringify(todoList.todos); 
+      localStorage.deadTodos = JSON.stringify(todoList.deadTodos);
     };
   });
