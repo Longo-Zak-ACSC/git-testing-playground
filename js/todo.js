@@ -3,6 +3,38 @@ angular.module('todoApp', [])
     var todoList = this;
 
     /*
+     * api.myjson.com/bins/wpi5v
+     * $.get("https://api.myjson.com/bins/:id", function(data, textStatus, jqXHR) {});
+     *$.ajax({
+    	url:"https://api.myjson.com/bins",
+    	type:"POST",
+    	data:'{"key":"value"}',
+    	contentType:"application/json; charset=utf-8",
+   	dataType:"json",
+    	success: function(data, textStatus, jqXHR){
+    		
+		}
+	});
+
+
+	$.ajax({
+    		url:"https://api.myjson.com/bins/:id",
+    		type:"PUT",
+    		data:'{"key_updated":"value_updated"}',
+    		contentType:"application/json; charset=utf-8",
+    		dataType:"json",
+    		success: function(data, textStatus, jqXHR){
+
+    		}
+	}); 
+     *
+     *
+     */	
+
+
+    /*
+     *
+     *
      * LOCAL STORAGE UTILIZED 
      * SO DATA IS NOT LOST ON BROWSER REFRESH
      * IT IS LOST WHEN BROWSER IS CLOSED
