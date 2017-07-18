@@ -12,12 +12,12 @@
 	  	<hr>
     		<h2>Todo</h2>
     		<div ng-controller="TodoListController as todoList">
-      			<span>{{todoList.remaining()}} of {{todoList.todos.length}} remaining</span>
-      			[ <a href="" ng-click="todoList.archive()">Archive amd remove selected items</a> ]
+      			<span>{{todoList.todos_data.todos.length}} remaining</span>
+      			[ <a href="" ng-click="todoList.archive()">Archive and remove selected items</a> ]
       			<ul class="unstyled">
-        			<li ng-repeat="todo in todoList.todos">
+        			<li ng-repeat="todo in todoList.todos_data.todos">
           				<label class="checkbox">
-            					<input type="checkbox" ng-model="todo.done">
+						<input type="checkbox" ng-model="todo.done">
             					<span class="done-{{todo.done}}">{{todo.text}}</span>
           				</label>
         			</li>
@@ -32,13 +32,16 @@
       				<h4>Completed and Archived Todos</h4>
       				<div class="archives">
       					<ul class="unstyled">
-						<li ng-repeat="deadTodo in todoList.deadTodos">
+						<li ng-repeat="deadTodo in todoList.todos_data.deadTodos">
 							<del>{{deadTodo.text}}</del> - completed
 						</li>
 					</ul>
       				</div>
       			</div>
+			<br>
+			<br>
+			<button ng-click="todoList.clearAll()">CLEAR ALL</button> 
     		</div>
 	</div>
   </body>
-</html>
+</html

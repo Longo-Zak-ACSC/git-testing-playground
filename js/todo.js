@@ -1,89 +1,64 @@
 angular.module('todoApp', [])
-  .controller('TodoListController', function() {
+  .controller('TodoListController', function($scope, $http) {
     var todoList = this;
 
-    /*
-     * api.myjson.com/bins/wpi5v
-     * $.get("https://api.myjson.com/bins/:id", function(data, textStatus, jqXHR) {});
-     *$.ajax({
-    	url:"https://api.myjson.com/bins",
-    	type:"POST",
-    	data:'{"key":"value"}',
-    	contentType:"application/json; charset=utf-8",
-   	dataType:"json",
-    	success: function(data, textStatus, jqXHR){
-    		
+    todoList.data_url = "https://api.myjson.com/bins/16ez9b";
+    todoList.remainingTodos = 0;
+
+    function httpRequest(type, url, data){
+        $http({
+	    method: type,
+	    url: url,
+	    data: data
+	}).then(function mySuccess(response) {	
+		todoList.todos_data = angular.fromJson(response.data); 
+		todoList.remaining();
+
+		if (todoList.todos_data.deadTodos.length > 0){
+		    todoList.showArchives = true;
 		}
+	    }, function myError(response){
+	    	console.log("there was an error: " + response.status);
 	});
-
-
-	$.ajax({
-    		url:"https://api.myjson.com/bins/:id",
-    		type:"PUT",
-    		data:'{"key_updated":"value_updated"}',
-    		contentType:"application/json; charset=utf-8",
-    		dataType:"json",
-    		success: function(data, textStatus, jqXHR){
-
-    		}
-	}); 
-     *
-     *
-     */	
-
-
-    /*
-     *
-     *
-     * LOCAL STORAGE UTILIZED 
-     * SO DATA IS NOT LOST ON BROWSER REFRESH
-     * IT IS LOST WHEN BROWSER IS CLOSED
-    */
-    if (localStorage.getItem("todos") !== null) {
-    	todoList.todos = JSON.parse(localStorage.todos);
-    } else {
-    	todoList.todos = [
-      	    {text:'learn AngularJS', done:true},
-      	    {text:'build an AngularJS app', done:false}
-    	];
     }
 
-    if (localStorage.getItem("deadTodos") !== null) {
-	todoList.showArchives = true;
-	todoList.deadTodos = JSON.parse(localStorage.deadTodos);
-    } else {
-	todoList.showArchives = false;
-    	todoList.deadTodos = [];
-    }
- 
+    //Initial data load
+    httpRequest("GET", todoList.data_url, null);
  
     todoList.addTodo = function() {
-      todoList.todos.push({text:todoList.todoText, done:false});
+      var newTodo = {text:todoList.todoText, done:false};
+      todoList.todos_data.todos.push(newTodo);
       todoList.todoText = '';
-      localStorage.todos = JSON.stringify(todoList.todos);
+      
+      httpRequest("PUT", todoList.data_url, angular.toJson(todoList.todos_data)); 
     };
  
     todoList.remaining = function() {
       var count = 0;
-      angular.forEach(todoList.todos, function(todo) {
+      angular.forEach(todoList.todos_data.todos, function(todo) {
         count += todo.done ? 0 : 1;
       });
       return count;
     };
  
     todoList.archive = function() {
-      var oldTodos = todoList.todos;
-      todoList.todos = [];
-      angular.forEach(oldTodos, function(todo) {
+      var currentTodos = todoList.todos_data.todos;
+      var temp = [];
+      angular.forEach(currentTodos, function(todo) {
         if (!todo.done) {
-		todoList.todos.push(todo);
+		temp.push(todo);
 	} else {
 		todoList.showArchives = true;
-		todoList.deadTodos.push(todo);		
+		todoList.todos_data.deadTodos.push(todo);		
       	} 
       });
-       
-      localStorage.todos = JSON.stringify(todoList.todos); 
-      localStorage.deadTodos = JSON.stringify(todoList.deadTodos);
+
+      todoList.todos_data.todos = temp;
+      httpRequest("PUT", todoList.data_url, angular.toJson(todoList.todos_data));
+    };
+
+    todoList.clearAll = function() {
+    	todoList.todos_data.todos = [];
+	todoList.todos_data.deadTodos = [];
     };
   });
