@@ -1,0 +1,49 @@
+<!doctype html>
+<html ng-app="todoApp">
+  <head>
+	<title>Git Testing Playground</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="js/todo.js"></script>
+    <link rel="stylesheet" href="styles/todo.css">
+  </head>
+  <body>
+	  <div class="container">
+	  	<h1>Git Testing Playground</h1>
+	  	<hr>
+    		<h2>Todo</h2>
+    		<div ng-controller="TodoListController as todoList">
+      			<span>{{todoList.todos_data.todos.length}} remaining</span>
+      			[ <a href="" ng-click="todoList.archive()">Archive and remove selected items</a> ]
+      			<ul class="unstyled">
+        			<li ng-repeat="todo in todoList.todos_data.todos">
+          				<label class="checkbox">
+						<input type="checkbox" ng-model="todo.done">
+            					<span class="done-{{todo.done}}">{{todo.text}}</span>
+          				</label>
+        			</li>
+      			</ul>
+      			<form ng-submit="todoList.addTodo()">
+        			<input type="text" ng-model="todoList.todoText"  size="30" placeholder="add new todo here">
+        			<input class="btn-primary" type="submit" value="add">
+      			</form>
+      			<br>
+      			<br>
+      			<div ng-show="todoList.showArchives">
+      				<h4>Completed and Archived Todos</h4>
+      				<div class="archives">
+      					<ul class="unstyled">
+						<li ng-repeat="deadTodo in todoList.todos_data.deadTodos">
+							<del>{{deadTodo.text}}</del> - completed
+						</li>
+					</ul>
+      				</div>
+      			</div>
+			<br>
+			<br>
+			<button ng-click="todoList.clear('todos')">CLEAR TODOS</button> 
+			<button ng-click="todoList.clear('deadTodos')">CLEAR DEAD TODOS</button> 
+			<button ng-click="todoList.clear('all')">CLEAR ALL</button> 
+    		</div>
+	</div>
+  </body>
+</html
