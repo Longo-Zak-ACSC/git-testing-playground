@@ -57,8 +57,23 @@ angular.module('todoApp', [])
       httpRequest("PUT", todoList.data_url, angular.toJson(todoList.todos_data));
     };
 
-    todoList.clearAll = function() {
-    	todoList.todos_data.todos = [];
-	todoList.todos_data.deadTodos = [];
+    todoList.clear = function(data) {
+	switch(data) {
+		case "todos":
+			todoList.todos_data.todos = [];
+			httpRequest("PUT", todoList.data_url, angular.toJson(todoList.todos_data));
+	    		break;
+		case "deadTodos":
+			todoList.todos_data.deadTodos = [];	
+			todoList.showArchives = false;
+			httpRequest("PUT", todoList.data_url, angular.toJson(todoList.todos_data));
+	    		break;
+	    	case "all":			
+			todoList.todos_data.todos = [];
+			todoList.todos_data.deadTodos = [];	
+			todoList.showArchives = false;
+			httpRequest("PUT", todoList.data_url, angular.toJson(todoList.todos_data));
+	    		break;
+    	}//end switch
     };
   });

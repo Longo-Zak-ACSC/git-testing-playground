@@ -40,7 +40,9 @@
       			</div>
 			<br>
 			<br>
-			<button ng-click="todoList.clearAll()">CLEAR ALL</button> 
+			<button ng-click="todoList.clear('todos')">CLEAR TODOS</button> 
+			<button ng-click="todoList.clear('deadTodos')">CLEAR DEAD TODOS</button> 
+			<button ng-click="todoList.clear('all')">CLEAR ALL</button> 
     		</div>
 	</div>
   </body>
