@@ -9,7 +9,14 @@
   <body>
 	  <div class="container">
     		<div ng-controller="TodoListController as todoList">
-			<h1>Todo <sup style="font-size: 12px;">[{{todoList.todos_data.todos.length}} remaining]</sup></h1>
+			<select ng-model="todoList.selectedUser" ng-change="todoList.setUser(todoList.selectedUser)">
+  				<option value="Guest" selected>Guest</option>
+ 				<option value="Mom">Mom</option>
+				<option value="Pappa">Pappa</option>
+  				<option value="Jules">Jules</option>
+				<option value="Celia">Celia</option>
+			</select>
+			<h1><span>{{todoList.user + "'s"}}<span> Todo List <sup style="font-size: 12px;">[{{todoList.todos_data.todos.length}} todos remaining]</sup></h1>
       			<form ng-submit="todoList.addTodo()"> 
         			<input type="text" ng-model="todoList.todoText"  size="30" placeholder="add new todo here">
         			<input class="btn-primary" type="submit" value="add">
@@ -42,9 +49,8 @@
 			<br>
 			<br>
 			<button ng-click="todoList.clear('todos')">CLEAR TODOS</button> 
-			<button ng-click="todoList.clear('deadTodos')">CLEAR ARCHIVE</button> 
-			<button ng-click="todoList.clear('everything')">CLEAR ALL</button> 
-			<p class="subdued-text"><em>*using clear buttons permanently removes all data from specified area</em></p>
+			<button ng-click="todoList.clear('deadTodos')" ng-show="todoList.showArchives">CLEAR ARCHIVE</button> 
+			<button ng-click="todoList.clear('everything')" ng-show="todoList.showArchives">CLEAR ALL</button> 
     		</div>
 	</div>
   </body>

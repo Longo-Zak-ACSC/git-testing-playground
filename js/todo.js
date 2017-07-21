@@ -4,6 +4,40 @@ angular.module('todoApp', [])
 
     todoList.data_url = "https://api.myjson.com/bins/16ez9b";
     todoList.remainingTodos = 0;
+    todoList.user = "Guest";
+    todoList.selectedUser = todoList.user;
+
+    todoList.setUser = function(user) {
+        todoList.user = user;
+	todoList.showArchives = false;
+
+	//black out data for UX as user waits for their data to return and display
+	todoList.todos_data.todos = [];
+	todoList.todos_data.deadTodos = [];
+    	
+	switch(user) {
+		case "Mom":
+			todoList.data_url = "https://api.myjson.com/bins/79i8j";
+    			httpRequest("GET", todoList.data_url, null);
+			break;
+		case "Pappa":
+			todoList.data_url = "https://api.myjson.com/bins/12thar";
+    			httpRequest("GET", todoList.data_url, null);
+			break;
+		case "Jules":
+			todoList.data_url = "https://api.myjson.com/bins/9n8nn";
+    			httpRequest("GET", todoList.data_url, null);
+			break;
+		case "Celia":
+			todoList.data_url = "https://api.myjson.com/bins/s3oer";
+    			httpRequest("GET", todoList.data_url, null);
+			break;
+		case "Guest":
+			todoList.data_url = "https://api.myjson.com/bins/16ez9b";
+    			httpRequest("GET", todoList.data_url, null);
+			break;
+	}
+    }
 
     function httpRequest(type, url, data){
         $http({
