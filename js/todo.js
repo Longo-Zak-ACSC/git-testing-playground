@@ -22,6 +22,19 @@ angular.module('todoApp', [])
 	});
     }
 
+    function getObjectKeyIndex(obj, keyToFind) {
+    	var i = 0;
+
+    	for (key in obj) {
+        	if (obj[key].text == keyToFind) {
+            		return i;
+        	}
+        	i++;
+    	}
+
+    	return null;
+    }
+
     //Initial data load
     httpRequest("GET", todoList.data_url, null);
  
@@ -58,8 +71,11 @@ angular.module('todoApp', [])
     };
 
     todoList.clear = function(data) {
-	switch(data) {
-		case "todos":
+	var ok = confirm(data + " WILL BE PERMENTLY DELETED.");
+	
+	if (ok) {
+	    switch(data) {
+		case "todos":			
 			todoList.todos_data.todos = [];
 			httpRequest("PUT", todoList.data_url, angular.toJson(todoList.todos_data));
 	    		break;
@@ -68,12 +84,24 @@ angular.module('todoApp', [])
 			todoList.showArchives = false;
 			httpRequest("PUT", todoList.data_url, angular.toJson(todoList.todos_data));
 	    		break;
-	    	case "all":			
+	    	case "everything":			
 			todoList.todos_data.todos = [];
 			todoList.todos_data.deadTodos = [];	
 			todoList.showArchives = false;
 			httpRequest("PUT", todoList.data_url, angular.toJson(todoList.todos_data));
 	    		break;
-    	}//end switch
+    	    }
+	}
+    };
+
+    todoList.removeTodo = function(todo) {
+	var todoIndex = getObjectKeyIndex(todoList.todos_data.todos, todo.text);
+	
+	var ok = confirm("ARE YOU SURE? YOU CAN'T GET IT BACK ONCE YOU DELETE IT.");    
+	
+	if (ok) {
+	    todoList.todos_data.todos.splice(todoIndex,1);
+	    httpRequest("PUT", todoList.data_url, angular.toJson(todoList.todos_data));
+	}
     };
   });

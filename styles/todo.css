@@ -5,6 +5,7 @@
 
 .unstyled {
   list-style: none;
+  padding: 0;
 }
 
 .container {
@@ -22,3 +23,16 @@
 .archives ul li {
   color: #aaa;
 }
+
+.remove-link {
+  color: #ff0000;
+}
+
+.subdued-text {
+  color: #a5a5a5;
+}
+
+h4 {
+  margin-top: 0;
+}
+
