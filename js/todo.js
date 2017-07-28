@@ -138,4 +138,18 @@ angular.module('todoApp', [])
 	    httpRequest("PUT", todoList.data_url, angular.toJson(todoList.todos_data));
 	}
     };
+
+    todoList.edit = function(todo) {	
+	var todoIndex = getObjectKeyIndex(todoList.todos_data.todos, todo.text);
+	todo['editing'] = true;
+
+	
+    };
+
+    todoList.saveTodo = function(todo) {
+    	todo['editing'] = false;
+
+	
+	
+    };
   });
