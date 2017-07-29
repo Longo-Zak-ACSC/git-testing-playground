@@ -10,11 +10,11 @@
 	  <div class="container">
     		<div ng-controller="TodoListController as todoList">
 			<select ng-model="todoList.selectedUser" ng-change="todoList.setUser(todoList.selectedUser)">
-  				<option value="Guest" selected>Guest</option>
- 				<option value="Mom">Mom</option>
-				<option value="Pappa">Pappa</option>
-  				<option value="Jules">Jules</option>
-				<option value="Celia">Celia</option>
+  				<option value="guest" selected>guest</option>
+ 				<option value="mom">mom</option>
+				<option value="pappa">pappa</option>
+  				<option value="jules">jules</option>
+				<option value="celia">celia</option>
 			</select>
 			<h1><span>{{todoList.user + "'s"}}<span> Todo List <sup style="font-size: 12px;">[{{todoList.todos_data.todos.length}} todos remaining]</sup></h1>
       			<form ng-submit="todoList.addTodo()"> 
@@ -28,11 +28,11 @@
         			<li ng-repeat="todo in todoList.todos_data.todos">
           				<label class="checkbox">
 						<input ng-disabled="todo.editing" type="checkbox" ng-model="todo.done">
-						<input ng-if="todo.editing" type="text" size="30">
+						<input ng-if="todo.editing" type="text" size="30" ng-model="todo.edit_text">
             					<span class="done-{{todo.done}}" ng-if="!todo.editing">{{todo.text}}</span>
-						<a href="#" class="remove-link" ng-click="todoList.removeTodo(todo)" ng-if="!todo.editing">remove</a>&nbsp;
-						<a href="#" style="color: #008cff" ng-click="todoList.edit(todo)" ng-if="!todo.editing && !todo.done">edit</a>&nbsp;
-						<a href="#" style="color: #008cff" ng-click="todoList.saveTodo(todo)" ng-if="todo.editing">save</a>
+						<a href="#" class="remove-link" ng-click="todoList.manageTodo.remove(todo)" ng-if="!todo.editing">remove</a>&nbsp;
+						<a href="#" style="color: #008cff" ng-click="todoList.manageTodo.edit(todo)" ng-if="!todo.editing && !todo.done">edit</a>&nbsp;
+						<a href="#" style="color: #008cff" ng-click="todoList.manageTodo.save(todo)" ng-if="todo.editing">save</a>
           				</label>
         			</li>
       			</ul>
@@ -58,5 +58,6 @@
 			<button ng-click="todoList.clear('everything')" ng-show="todoList.showArchives">CLEAR ALL</button> 
     		</div>
 	</div>
+	<div ng-bind="{{todoList.todos_data|json}}"></div>
   </body>
 </html

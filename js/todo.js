@@ -1,10 +1,11 @@
 angular.module('todoApp', [])
   .controller('TodoListController', function($scope, $http) {
     var todoList = this;
-
+	
+    todoList.urlParams = new URLSearchParams(window.location.search);
     todoList.data_url = "https://api.myjson.com/bins/16ez9b";
     todoList.remainingTodos = 0;
-    todoList.user = "Guest";
+    todoList.user = "guest";
     todoList.selectedUser = todoList.user;
 
     todoList.setUser = function(user) {
@@ -12,32 +13,52 @@ angular.module('todoApp', [])
 	todoList.showArchives = false;
 
 	//black out data for UX as user waits for their data to return and display
-	todoList.todos_data.todos = [];
-	todoList.todos_data.deadTodos = [];
+	//todoList.todos_data.todos = [];
+	//todoList.todos_data.deadTodos = [];
     	
-	switch(user) {
-		case "Mom":
+	switch(user.toLowerCase()) {
+		case "mom":
 			todoList.data_url = "https://api.myjson.com/bins/79i8j";
     			httpRequest("GET", todoList.data_url, null);
+			todoList.setQuery(user);
+			todoList.selectedUser = user;
 			break;
-		case "Pappa":
+		case "pappa":
 			todoList.data_url = "https://api.myjson.com/bins/12thar";
     			httpRequest("GET", todoList.data_url, null);
+			todoList.setQuery(user);
+			todoList.selectedUser = user;
 			break;
-		case "Jules":
+		case "jules":
 			todoList.data_url = "https://api.myjson.com/bins/9n8nn";
     			httpRequest("GET", todoList.data_url, null);
+			todoList.setQuery(user);
+			todoList.selectedUser = user;
 			break;
-		case "Celia":
+		case "celia":
 			todoList.data_url = "https://api.myjson.com/bins/s3oer";
     			httpRequest("GET", todoList.data_url, null);
+			todoList.setQuery(user);
+			todoList.selectedUser = user;
 			break;
-		case "Guest":
+		case "guest":
 			todoList.data_url = "https://api.myjson.com/bins/16ez9b";
     			httpRequest("GET", todoList.data_url, null);
+			todoList.setQuery(user);
+			todoList.selectedUser = user;
+			break;
+		default:
+			todoList.data_url = "https://api.myjson.com/bins/16ez9b";
+    			httpRequest("GET", todoList.data_url, null);
+			todoList.setQuery('guest');
+			todoList.selectedUser = 'guest';
 			break;
 	}
     }
+
+    todoList.setQuery = function(query) {
+    	todoList.urlParams.append('user', query);
+    };
 
     function httpRequest(type, url, data){
         $http({
@@ -71,6 +92,12 @@ angular.module('todoApp', [])
 
     //Initial data load
     httpRequest("GET", todoList.data_url, null);
+    
+    if (todoList.urlParams.get('user')) {
+	todoList.query = todoList.urlParams.get('user');
+    	todoList.setUser(todoList.query);
+	todoList.selectedUser = todoList.query;
+    }
  
     todoList.addTodo = function() {
       var newTodo = {text:todoList.todoText, done:false};
@@ -128,28 +155,29 @@ angular.module('todoApp', [])
 	}
     };
 
-    todoList.removeTodo = function(todo) {
-	var todoIndex = getObjectKeyIndex(todoList.todos_data.todos, todo.text);
-	
-	var ok = confirm("ARE YOU SURE? YOU CAN'T GET IT BACK ONCE YOU DELETE IT.");    
-	
-	if (ok) {
-	    todoList.todos_data.todos.splice(todoIndex,1);
-	    httpRequest("PUT", todoList.data_url, angular.toJson(todoList.todos_data));
-	}
-    };
 
-    todoList.edit = function(todo) {	
-	var todoIndex = getObjectKeyIndex(todoList.todos_data.todos, todo.text);
-	todo['editing'] = true;
-
+    todoList.manageTodo = {
+	activeEdit: '',
+	edit: function(todo) {
+		todo['editing'] = true;
+		todo['edit_text'] = todo.text;
+	},
+	save: function(todo) {	
+		todo['editing'] = false;
+		todo.text = todo.edit_text;	    			
+		delete todo['editing'];
+		delete todo['edit_text'];
+	    	httpRequest("PUT", todoList.data_url, angular.toJson(todoList.todos_data));
+	},
+	remove: function(todo) {
+		var todoIndex = getObjectKeyIndex(todoList.todos_data.todos, todo.text);
 	
-    };
-
-    todoList.saveTodo = function(todo) {
-    	todo['editing'] = false;
-
+		var ok = confirm("ARE YOU SURE? YOU CAN'T GET IT BACK ONCE YOU DELETE IT.");    
 	
-	
+		if (ok) {
+	    		todoList.todos_data.todos.splice(todoIndex,1);
+	    		httpRequest("PUT", todoList.data_url, angular.toJson(todoList.todos_data));
+		}
+    	}
     };
   });
