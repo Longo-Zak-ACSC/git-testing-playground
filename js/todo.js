@@ -7,14 +7,12 @@ angular.module('todoApp', [])
     todoList.remainingTodos = 0;
     todoList.user = "guest";
     todoList.selectedUser = todoList.user;
+    todoList.showTodos = true;
 
     todoList.setUser = function(user) {
         todoList.user = user;
 	todoList.showArchives = false;
-
-	//black out data for UX as user waits for their data to return and display
-	//todoList.todos_data.todos = [];
-	//todoList.todos_data.deadTodos = [];
+        todoList.showTodos = false;
     	
 	switch(user.toLowerCase()) {
 		case "mom":
@@ -54,7 +52,7 @@ angular.module('todoApp', [])
 			todoList.selectedUser = 'guest';
 			break;
 	}
-    }
+    };
 
     todoList.setQuery = function(query) {
     	todoList.urlParams.append('user', query);
@@ -68,6 +66,8 @@ angular.module('todoApp', [])
 	}).then(function mySuccess(response) {	
 		todoList.todos_data = angular.fromJson(response.data); 
 		todoList.remaining();
+    		
+		todoList.showTodos = true;
 
 		if (todoList.todos_data.deadTodos.length > 0){
 		    todoList.showArchives = true;
@@ -157,7 +157,6 @@ angular.module('todoApp', [])
 
 
     todoList.manageTodo = {
-	activeEdit: '',
 	edit: function(todo) {
 		todo['editing'] = true;
 		todo['edit_text'] = todo.text;
@@ -168,6 +167,11 @@ angular.module('todoApp', [])
 		delete todo['editing'];
 		delete todo['edit_text'];
 	    	httpRequest("PUT", todoList.data_url, angular.toJson(todoList.todos_data));
+	},
+	cancel: function(todo) {		
+		todo['editing'] = false;
+		delete todo['editing'];
+		delete todo['edit_text'];
 	},
 	remove: function(todo) {
 		var todoIndex = getObjectKeyIndex(todoList.todos_data.todos, todo.text);

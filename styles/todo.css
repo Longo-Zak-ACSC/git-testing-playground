@@ -36,3 +36,19 @@ h4 {
   margin-top: 0;
 }
 
+form {
+  display: inline;
+}
+
+.user-title {
+  text-transform: capitalize; 
+}
+
+.edit-text {
+  color: #008cff;
+}
+
+.remaining-count {
+  font-size: 12px;
+}
+
