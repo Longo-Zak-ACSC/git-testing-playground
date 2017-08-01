@@ -2,7 +2,6 @@ angular.module('todoApp', [])
     .controller('TodoListController', function ($scope, $http) {
         var todoList = this;
 
-        todoList.urlParams = new URLSearchParams(window.location.search);
         todoList.data_url = "https://api.myjson.com/bins/16ez9b";
         todoList.remainingTodos = 0;
         todoList.user = "guest";
