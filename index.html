@@ -17,7 +17,7 @@
 				<option value="celia">celia</option>
 			</select>
 			<h1><span class="user-title">{{todoList.user + "'s"}}<span> Todo List <sup class="remaining-count">[{{todoList.todos_data.todos.length}} todos remaining]</sup></h1>
-      			<form ng-submit="todoList.addTodo()"> 
+      			<form ng-submit="todoList.manageTodo.add()"> 
         			<input type="text" ng-model="todoList.todoText"  size="30" placeholder="add new todo here">
         			<input class="btn-primary" type="submit" value="add">
       			</form>

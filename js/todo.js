@@ -48,8 +48,8 @@ angular.module('todoApp', [])
             todoList.selectedUser = user;
         };
 
-        todoList.setQuery = function (query) {
-            todoList.urlParams.append('user', query);
+        todoList.setQuery = function (hash) {
+            window.location.hash = hash;
         };
 
         function httpRequest(type, url, data) {
@@ -87,19 +87,11 @@ angular.module('todoApp', [])
         //Initial data load
         httpRequest("GET", todoList.data_url, null);
 
-        if (todoList.urlParams.get('user')) {
-            todoList.query = todoList.urlParams.get('user');
-            todoList.setUser(todoList.query);
-            todoList.selectedUser = todoList.query;
+        if (window.location.hash != '') {
+            todoList.hashValue = window.location.hash.substring(1);
+            todoList.setUser(todoList.hashValue);
+            todoList.selectedUser = todoList.hashValue;
         }
-
-        todoList.addTodo = function () {
-            var newTodo = { text: todoList.todoText, done: false };
-            todoList.todos_data.todos.push(newTodo);
-            todoList.todoText = '';
-
-            httpRequest("PUT", todoList.data_url, angular.toJson(todoList.todos_data));
-        };
 
         todoList.remaining = function () {
             var count = 0;
@@ -150,7 +142,14 @@ angular.module('todoApp', [])
         };
 
 
-        todoList.manageTodo = {
+        todoList.manageTodo = {		
+            add: function () {
+                var newTodo = { text: todoList.todoText, done: false };
+                todoList.todos_data.todos.push(newTodo);
+                todoList.todoText = '';
+
+                httpRequest("PUT", todoList.data_url, angular.toJson(todoList.todos_data));
+            },
             edit: function (todo) {
                 todo['editing'] = true;
                 todo['edit_text'] = todo.text;
