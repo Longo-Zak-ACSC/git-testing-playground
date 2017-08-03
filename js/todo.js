@@ -43,11 +43,11 @@ angular.module('todoApp', [])
 
         todoList.setUserUtils = function (data_url, user) {
             httpRequest("GET", data_url, null);
-            todoList.setQuery(user);
+            todoList.setHash(user);
             todoList.selectedUser = user;
         };
 
-        todoList.setQuery = function (hash) {
+        todoList.setHash = function (hash) {
             window.location.hash = hash;
         };
 

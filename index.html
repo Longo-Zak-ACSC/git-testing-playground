@@ -1,66 +1,81 @@
 <!doctype html>
 <html ng-app="todoApp">
-  <head>
-	<title>Git Testing Playground</title>
+<head>
+    <title>Git Testing Playground</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="http://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="js/todo.js"></script>
-    <link rel="stylesheet" href="styles/todo.css">
-  </head>
-  <body>
-	  <div class="container">
-    		<div ng-controller="TodoListController as todoList">
-			<select ng-model="todoList.selectedUser" ng-change="todoList.setUser(todoList.selectedUser)">
-  				<option value="guest" selected>guest</option>
- 				<option value="mom">mom</option>
-				<option value="pappa">pappa</option>
-  				<option value="jules">jules</option>
-				<option value="celia">celia</option>
-			</select>
-			<h1><span class="user-title">{{todoList.user + "'s"}}<span> Todo List <sup class="remaining-count">[{{todoList.todos_data.todos.length}} todos remaining]</sup></h1>
-      			<form ng-submit="todoList.manageTodo.add()"> 
-        			<input type="text" ng-model="todoList.todoText"  size="30" placeholder="add new todo here">
-        			<input class="btn-primary" type="submit" value="add">
-      			</form>
-			<br>
-			<hr>
-			<br>
-      			<ul class="unstyled" ng-show="todoList.showTodos">
-        			<li ng-repeat="todo in todoList.todos_data.todos">
-          				<label class="checkbox">
-						<input ng-disabled="todo.editing" type="checkbox" ng-model="todo.done">
-						<form ng-if="todo.editing" ng-submit="todoList.manageTodo.save(todo)">
-							<input type="text" size="30" ng-model="todo.edit_text">
-						</form>
-            					<span class="done-{{todo.done}}" ng-if="!todo.editing">{{todo.text}}</span>
-						<a href="#" class="remove-link" ng-click="todoList.manageTodo.remove(todo)" ng-if="!todo.editing">remove</a>&nbsp;
-						<a href="#" class="edit-text" ng-click="todoList.manageTodo.edit(todo)" ng-if="!todo.editing && !todo.done">edit</a>&nbsp;
-						<a href="#" class="edit-text" ng-click="todoList.manageTodo.save(todo)" ng-if="todo.editing">save</a>&nbsp;
-						<a href="#" class="edit-text" ng-click="todoList.manageTodo.cancel(todo)" ng-if="todo.editing">cancel</a>
-          				</label>
-        			</li>
-      			</ul>
-      			<a href="" ng-click="todoList.archive()">Archive selected items</a>
-      			<br>
-      			<br>
-			<br>
-			<br>
-      			<div ng-show="todoList.showArchives">
-      				<div class="archives">
-      					<h4>Dead Todos Graveyard</h4>
-      					<ul class="unstyled">
-						<li ng-repeat="deadTodo in todoList.todos_data.deadTodos">
-							<del>{{deadTodo.text}}</del> - completed
-						</li>
-					</ul>
-      				</div>
-      			</div>
-			<br>
-			<br>
-			<button ng-click="todoList.clear('todos')">CLEAR TODOS</button> 
-			<button ng-click="todoList.clear('deadTodos')" ng-show="todoList.showArchives">CLEAR ARCHIVE</button> 
-			<button ng-click="todoList.clear('everything')" ng-show="todoList.showArchives">CLEAR ALL</button> 
-    		</div>
-	</div>
-	<div ng-bind="{{todoList.todos_data|json}}"></div>
-  </body>
-</html
+    <!--<link rel="stylesheet" href="styles/todo.css">-->
+</head>
+<body>
+    <div class="container" ng-controller="TodoListController as todoList">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center bg-primary"><span class="user-title">{{todoList.user + "'s"}}</span> Todo List <sup class="remaining-count">[{{todoList.todos_data.todos.length}} remaining]</sup></h1>
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col-md-2">
+                <strong>Select a different user</strong>
+            </div>
+            <div class="col-md-10">
+                <select class="form-control" ng-model="todoList.selectedUser" ng-change="todoList.setUser(todoList.selectedUser)">
+                    <option value="guest" selected>guest</option>
+                    <option value="mom">mom</option>
+                    <option value="pappa">pappa</option>
+                    <option value="jules">jules</option>
+                    <option value="celia">celia</option>
+                </select>
+            </div>
+        </div>
+            
+            <form ng-submit="todoList.manageTodo.add()">
+                <input type="text" ng-model="todoList.todoText" size="30" placeholder="add new todo here">
+                <input class="btn btn-default btn-xs" type="submit" value="SUBMIT">
+            </form>
+            <br>
+            <hr>
+            <br>
+            <ul class="unstyled" ng-show="todoList.showTodos">
+                <li ng-repeat="todo in todoList.todos_data.todos">
+                    <div class="checkbox">
+                        <input ng-disabled="todo.editing" type="checkbox" ng-model="todo.done">
+                        <form ng-if="todo.editing" ng-submit="todoList.manageTodo.save(todo)">
+                            <input type="text" size="30" ng-model="todo.edit_text">
+                        </form>
+                        <span class="done-{{todo.done}}" ng-if="!todo.editing">{{todo.text}}</span>
+                        <button class="btn btn-danger btn-xs" ng-click="todoList.manageTodo.remove(todo)" ng-if="!todo.editing"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>&nbsp;
+                        <button class="btn btn-primary btn-xs" ng-click="todoList.manageTodo.edit(todo)" ng-if="!todo.editing && !todo.done"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp;
+                        <button class="btn btn-success btn-xs" ng-click="todoList.manageTodo.save(todo)" ng-if="todo.editing"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>&nbsp;
+                        <button class="btn btn-default btn-xs" ng-click="todoList.manageTodo.cancel(todo)" ng-if="todo.editing">cancel</button>
+                    </div>
+                </li>
+            </ul>
+            <a href="" ng-click="todoList.archive()">Archive selected items</a>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div ng-show="todoList.showArchives">
+                <div class="archives">
+                    <h4>Dead Todos Graveyard</h4>
+                    <ul class="unstyled">
+                        <li ng-repeat="deadTodo in todoList.todos_data.deadTodos">
+                            <del>{{deadTodo.text}}</del> - completed
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <br>
+            <br>
+            <button class="btn btn-default" ng-click="todoList.clear('todos')">CLEAR TODOS</button>
+            <button class="btn btn-default" ng-click="todoList.clear('deadTodos')" ng-show="todoList.showArchives">CLEAR GRAVEYARD</button>
+            <button class="btn btn-default" ng-click="todoList.clear('everything')" ng-show="todoList.showArchives">CLEAR ALL</button>
+
+    </div>
+    <div ng-bind="{{todoList.todos_data|json}}"></div>
+</body>
+</html>
